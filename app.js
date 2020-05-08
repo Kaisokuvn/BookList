@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const morgan = require('morgan');
-const path = require('path');
 const cors = require('cors');
 
 const booksRouter = require("./routes/books");
@@ -16,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
-app.use(express.static('build'));
+
 
 const url = process.env.DB_URL;
 mongoose.connect(url, {
@@ -27,9 +26,7 @@ mongoose.connect(url, {
 const db = mongoose.connection;
 db.once("open", () => console.log("connect to database"));
 
-app.get("*", (req,res)=>{
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
+
 
 app.use("/books", booksRouter);
 
